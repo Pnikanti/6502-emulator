@@ -1,11 +1,12 @@
 #include "6502/cpu6502.h"
 #include "assembler/lexer.h"
 #include "memory.h"
+#include <string>
 
 int main()
 {
     auto lexer = Lexer();
-    lexer.ReadFile("programs/lda.asm");
+    lexer.ReadFile(std::string(ASSEMBLY_FILE));
     auto mem = new Memory();
     auto CPU = CPU6502(mem, 2);
 
