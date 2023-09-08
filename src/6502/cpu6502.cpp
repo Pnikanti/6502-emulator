@@ -4,19 +4,17 @@
 #include "memory.h"
 #include "utils/log.h"
 
-CPU6502::CPU6502(Memory* memory, int32_t cycles) : m_memory(memory), m_cycles(cycles) {
-    LOG(">> CPU created with " + std::to_string(MAX_MEMORY) + " KBs of memory");
+CPU6502::CPU6502(Memory* memory, uint32_t cycles) : m_memory(memory), m_cycles(cycles) {
+    LOG(">> CPU created with " + std::to_string(MAX_MEMORY) + " bytes of memory");
 }
 
-void CPU6502::SetMemory(int address, uint8_t data) {
+void CPU6502::SetMemory(uint16_t address, uint8_t data) {
     m_memory->memory[address] = data;
 }
 
 uint8_t CPU6502::Step() {
-    uint8_t data = m_memory->memory[m_programCounter];
-    m_programCounter++;
     m_cycles--;
-    return data;
+    return m_memory->memory[m_programCounter++];
 }
 
 void CPU6502::Reset() {
@@ -29,9 +27,10 @@ void CPU6502::Run() {
     while (m_cycles > 0)
     {
         // Get instruction from the Program Counter
+        LOG(">> Program Counter\n Address: " + std::to_string(m_programCounter));
         uint8_t instruction = Step();
-
-        LOG(">> Program Counter\n Got Data: " + std::to_string(instruction));
+        LOG(">> Program Counter\n Instruction: " + std::to_string(instruction));
+        RunInstruction(instruction);
     }
 }
 
@@ -49,8 +48,9 @@ void CPU6502::LDA_Immediate() {
     m_accumulator = Step();
 
     m_zero = (m_accumulator == 0);
+    // & is bitwise AND operator
     m_negative = (m_accumulator & 0b1000000) > 0;
-    LOG(">> LDA\nm_zero: " + std::to_string(m_zero) + "\nm_negative: " + std::to_string(m_negative));
+    LOG(">> LDA\nvalue: " + std::to_string(m_accumulator) +"\nzero: " + std::to_string(m_zero) + "\nnegative: " + std::to_string(m_negative));
 }
 
 void CPU6502::LDX_Immediate() {

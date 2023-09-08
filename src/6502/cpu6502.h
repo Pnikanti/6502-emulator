@@ -4,10 +4,10 @@
 
 class CPU6502 {
 public:
-    CPU6502(Memory* memory, int32_t cycles);
+    CPU6502(Memory* memory, uint32_t cycles);
     void Reset();
     void Run();
-    void SetMemory(int address, uint8_t data);
+    void SetMemory(uint16_t address, uint8_t data);
 private:
     void RunInstruction(uint8_t instruction);
     uint8_t Step();
@@ -15,14 +15,14 @@ private:
     void LDX_Immediate();
 private:
     Memory* m_memory;
-    int16_t m_programCounter;
-    int8_t m_stackPointer;
-    int8_t m_accumulator;
-    int8_t m_registerX;
-    int8_t m_registerY;
+    uint16_t m_programCounter;
+    uint8_t m_stackPointer;
+    uint8_t m_accumulator;
+    uint8_t m_registerX;
+    uint8_t m_registerY;
 
     // Emulator cycles
-    int32_t m_cycles;
+    uint32_t m_cycles;
 
     // Processor status flags
     bool m_carry;
