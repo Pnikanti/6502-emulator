@@ -20,5 +20,5 @@ int main()
     CPU.SetMemory(0xFFFD, 0xFF); // 0x30
 
     // End Inline Program
-    CPU.Run();
+    CPU.Start();
 }

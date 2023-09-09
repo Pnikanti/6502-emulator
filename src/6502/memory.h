@@ -1,14 +1,15 @@
 #pragma once
 #include <cstdint>
+// 16 bit addressing allows 65535 bytes of memory
+// .. 32, 16, 8, 4, 2, 1 (Little Endian)
 #define MAX_MEMORY 1024 * 64
 
 class Memory {
     public:
-        uint8_t memory[MAX_MEMORY];
+        uint16_t memory[MAX_MEMORY];
     public:
-        int32_t GetSize() { return sizeof(memory); } 
+        uint16_t GetSize() { return sizeof(memory); } 
 
-        // TODO: Does the memory reset itself or does the CPU do it?
         void Reset() {
             for ( int i = 0; i < GetSize(); i++)
                 memory[i] = 0x0;

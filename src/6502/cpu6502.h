@@ -6,13 +6,21 @@ class CPU6502 {
 public:
     CPU6502(Memory* memory, uint32_t cycles);
     void Reset();
-    void Run();
-    void SetMemory(uint16_t address, uint8_t data);
+    void Start();
+    void Program(uint16_t address, uint16_t data);
 private:
-    void RunInstruction(uint8_t instruction);
-    uint8_t Step();
-    void LDA_Immediate();
-    void LDX_Immediate();
+    uint16_t StepProgramCounter();
+    void Execute(uint8_t instruction);
+    void WriteMemory(uint16_t address, uint8_t data);
+    void WriteMemory(uint16_t address, uint16_t data);
+    uint16_t LoadMemory(uint8_t address);
+    uint16_t LoadMemory(uint16_t address);
+    // Instructions
+    void LDA_IM();
+    void LDA_ZP();
+    void LDX_IM();
+    void LDX_ZP();
+    void JSR();
 private:
     Memory* m_memory;
     uint16_t m_programCounter;
@@ -21,7 +29,7 @@ private:
     uint8_t m_registerX;
     uint8_t m_registerY;
 
-    // Emulator cycles
+    // CPU Emulator cycles
     uint32_t m_cycles;
 
     // Processor status flags
